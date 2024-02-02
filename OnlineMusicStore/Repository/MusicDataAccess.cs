@@ -21,7 +21,7 @@ namespace OnlineMusicStore.Repository
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("GetAllMusic", connection))
+                using (SqlCommand command = new SqlCommand("GetMusicsAll", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 

@@ -20,6 +20,7 @@ namespace OnlineMusicStore.Controllers
             musicDataAccess = new MusicDataAccess(connectionString);
         }*/
 
+        //Funtionality Created and tested
         [HttpGet]
         public IActionResult Index()
         {
@@ -33,6 +34,7 @@ namespace OnlineMusicStore.Controllers
             return View();
         }
 
+        //Functionality Created and Tested
         [HttpPost]
         public IActionResult Create(Music music)
         {
