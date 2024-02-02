@@ -48,6 +48,42 @@ namespace OnlineMusicStore.Repository
 
         }
 
+        public Music GetMusicById(int id)
+        {
+            Music music = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("GetMusicById", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters to the stored procedure
+                    command.Parameters.Add(new SqlParameter("@Id", SqlDbType.Int) { Value = id });
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        // Check if a record was returned
+                        if (reader.Read())
+                        {
+                            music = new Music
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Artist = reader["Artist"].ToString(),
+                                Price = Convert.ToInt32(reader["Price"])
+                                // Add other properties as needed
+                            };
+                        }
+                    }
+                }
+            }
+
+            return music;
+        }
+
         public void CreateMusic(Music music)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

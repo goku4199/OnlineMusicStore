@@ -28,6 +28,7 @@ namespace OnlineMusicStore.Controllers
             return View(musicList);
         }
 
+        //Funtionality Created and tested
         [HttpGet]
         public IActionResult Create()
         {
@@ -53,7 +54,27 @@ namespace OnlineMusicStore.Controllers
             }
             return View(music);
         }
+
         */
+
+        //Funtionality Created and tested
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            // Retrieve the Music record from the database based on the provided id
+            Music music = musicDataAccess.GetMusicById(id);
+
+            // Check if the music record exists
+            if (music == null)
+            {
+                return NotFound(); // Or handle the case where the record is not found
+            }
+
+            // Pass the Music object to the Edit.cshtml Razor view for user input
+            return View(music);
+        }
+
+        //Funtionality Created and tested
         [HttpPost]
         public IActionResult Update(Music music)
         {
