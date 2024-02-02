@@ -6,13 +6,19 @@ namespace OnlineMusicStore.Controllers
 {
     public class MusicController : Controller
     {
+        //private readonly MusicDataAccess musicDataAccess;
         private readonly MusicDataAccess musicDataAccess;
 
-        public MusicController(IConfiguration configuration)
+        public MusicController(MusicDataAccess musicDataAccess)
+        {
+            this.musicDataAccess = musicDataAccess;
+        }
+
+        /*public MusicController(IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString("YourConnectionStringName");
             musicDataAccess = new MusicDataAccess(connectionString);
-        }
+        }*/
 
         [HttpGet]
         public IActionResult Index()

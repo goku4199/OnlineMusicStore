@@ -1,7 +1,12 @@
+using OnlineMusicStore.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var connectionString = builder.Configuration.GetConnectionString("YourConnectionStringName");
+builder.Services.AddSingleton(new MusicDataAccess(connectionString));
 
 var app = builder.Build();
 

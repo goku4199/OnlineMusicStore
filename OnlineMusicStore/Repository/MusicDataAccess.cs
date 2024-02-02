@@ -34,7 +34,7 @@ namespace OnlineMusicStore.Repository
                                 Id = Convert.ToInt32(reader["Id"]),
                                 Title = reader["Title"].ToString(),
                                 Artist = reader["Artist"].ToString(),
-                                Price = Convert.ToDecimal(reader["Price"])
+                                Price = Convert.ToInt32(reader["Price"])
                                 // Add other properties as needed
                             };
 

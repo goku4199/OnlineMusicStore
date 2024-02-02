@@ -12,7 +12,7 @@ namespace OnlineMusicStore.Models
         [Required(ErrorMessage = "Artist is required")]
         public string Artist { get; set; }
 
-        public decimal Price { get; set; }
+        public int Price { get; set; }
 
         // Other properties...
     }
