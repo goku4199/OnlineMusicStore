@@ -13,12 +13,14 @@ namespace OnlineMusicStore.Controllers
         {
             this.userDataAccess = userDataAccess;
         }
+        //Funtionality Created and tested
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        //Funtionality Created and tested
         [HttpPost]
         public IActionResult Register(User user)
         {
@@ -32,12 +34,14 @@ namespace OnlineMusicStore.Controllers
             return View(user);
         }
 
+        //Funtionality Created and tested
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        //Funtionality Created and tested
         [HttpPost]
         public IActionResult Login(User user)
         {
@@ -59,11 +63,22 @@ namespace OnlineMusicStore.Controllers
             return View(user);
         }
 
+        //Funtionality Created and tested
         [HttpPost]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear(); // Clear all session data
             return RedirectToAction("Login", "User");
+        }
+
+        [HttpPost]
+        public IActionResult AddToCart(int userId, int songId)
+        {
+            // Call ADO.net logic to add the song to the cart
+            userDataAccess.AddToCart(userId, songId);
+
+            // Redirect back to the Music/Index view or another appropriate page
+            return RedirectToAction("Index", "Music");
         }
     }
 }

@@ -52,6 +52,17 @@ else
                         <td>@music.Artist</td>
                         <td>@music.Price</td>
                         <!-- Add other columns as needed -->
+                        <td>
+                            @if (userId.HasValue && !string.IsNullOrEmpty(username))
+                            {
+                                <form method="post" action="@Url.Action("AddToCart", "User")">
+                                    <input type="hidden" name="userId" value="@userId" />
+                                    <input type="hidden" name="songId" value="@music.Id" />
+                                    <button type="submit">Add to Cart</button>
+                                </form>
+                            }
+                        </td>
+                        
                     </tr>
                 }
             </tbody>

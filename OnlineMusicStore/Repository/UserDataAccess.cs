@@ -62,5 +62,23 @@ namespace OnlineMusicStore.Repository
 
             return null; // User not found or invalid credentials
         }
+
+        public void AddToCart(int userId, int songId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("AddToCart", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.Parameters.AddWithValue("@SongId", songId);
+                    // Add other parameters as needed
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
