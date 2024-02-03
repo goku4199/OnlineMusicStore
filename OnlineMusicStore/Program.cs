@@ -4,9 +4,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set your desired session timeout
+});
 
 var connectionString = builder.Configuration.GetConnectionString("YourConnectionStringName");
 builder.Services.AddSingleton(new MusicDataAccess(connectionString));
+builder.Services.AddSingleton(new UserDataAccess(connectionString));
+
+
 
 var app = builder.Build();
 
@@ -24,6 +31,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
