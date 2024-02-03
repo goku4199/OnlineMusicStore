@@ -94,12 +94,13 @@ namespace OnlineMusicStore.Controllers
         }
         */
 
-        [HttpPost]
-        public IActionResult DeleteMusic(int id)
+        [HttpGet]
+        public IActionResult Delete(int id)
         {
             musicDataAccess.DeleteMusic(id);
             return RedirectToAction("Index");
         }
+        
     }
 
 }
