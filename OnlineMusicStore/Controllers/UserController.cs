@@ -71,6 +71,7 @@ namespace OnlineMusicStore.Controllers
             return RedirectToAction("Login", "User");
         }
 
+        //Funtionality Created and tested
         [HttpPost]
         public IActionResult AddToCart(int userId, int songId)
         {
@@ -79,6 +80,24 @@ namespace OnlineMusicStore.Controllers
 
             // Redirect back to the Music/Index view or another appropriate page
             return RedirectToAction("Index", "Music");
+        }
+
+        //Funtionality Created and tested
+        [HttpGet]
+        public IActionResult Cart()
+        {
+            // Get user ID from session
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId.HasValue)
+            {
+                // Call ADO.net logic to retrieve songs in the user's cart
+                var cart = userDataAccess.GetCartSongs(userId.Value);
+                return View(cart);
+            }
+
+            // Redirect to login or handle appropriately for not logged in user
+            return RedirectToAction("Login", "User");
         }
     }
 }

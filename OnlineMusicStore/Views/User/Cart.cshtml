@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+
+@model Cart  
+
+<h2>Your Cart</h2>
+
+@if (Model != null)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Price</th>
+                
+                <!-- Add other columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var music in Model.music)
+            {
+                <tr>
+                    <td>@music.Id</td>
+                    <td>@music.Title</td>
+                    <td>@music.Artist</td>
+                    <td>@music.Price</td>
+                    <!-- Add other columns as needed -->
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+
+    <h2>Total Price</h2>
+    @Model.Price
+}
+else
+{
+    <p>Your cart is empty.</p>
+}

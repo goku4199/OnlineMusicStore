@@ -10,8 +10,8 @@ builder.Services.AddSession(options =>
 });
 
 var connectionString = builder.Configuration.GetConnectionString("YourConnectionStringName");
-builder.Services.AddSingleton(new MusicDataAccess(connectionString));
-builder.Services.AddSingleton(new UserDataAccess(connectionString));
+builder.Services.AddSingleton(new MusicDataAccess(connectionString));//
+builder.Services.AddSingleton(new UserDataAccess(connectionString));//
 
 
 
@@ -31,7 +31,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-app.UseSession();
+app.UseSession();//
 
 app.MapControllerRoute(
     name: "default",

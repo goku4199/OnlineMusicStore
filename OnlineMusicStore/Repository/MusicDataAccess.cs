@@ -13,6 +13,7 @@ namespace OnlineMusicStore.Repository
             this.connectionString = connectionString;
         }
 
+        //Funtionality Created and tested
         public List<Music> GetAllMusic()
         {
             List<Music> musicList = new List<Music>();
@@ -48,6 +49,7 @@ namespace OnlineMusicStore.Repository
 
         }
 
+        //Funtionality Created and tested
         public Music GetMusicById(int id)
         {
             Music music = null;
@@ -84,6 +86,7 @@ namespace OnlineMusicStore.Repository
             return music;
         }
 
+        //Funtionality Created and tested
         public void CreateMusic(Music music)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -105,6 +108,7 @@ namespace OnlineMusicStore.Repository
             }
         }
 
+        //Funtionality Created and tested
         public void UpdateMusic(Music music)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -127,6 +131,7 @@ namespace OnlineMusicStore.Repository
             }
         }
 
+        //Funtionality Created and tested
         public void DeleteMusic(int musicId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

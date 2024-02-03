@@ -13,6 +13,7 @@ namespace OnlineMusicStore.Repository
             this.connectionString = connectionString;
         }
 
+        //Funtionality Created and tested
         public void RegisterUser(User user)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -34,6 +35,7 @@ namespace OnlineMusicStore.Repository
             }
         }
 
+        //Funtionality Created and tested
         public User ValidateUser(User user)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -63,6 +65,7 @@ namespace OnlineMusicStore.Repository
             return null; // User not found or invalid credentials
         }
 
+        //Funtionality Created and tested
         public void AddToCart(int userId, int songId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -80,5 +83,52 @@ namespace OnlineMusicStore.Repository
                 }
             }
         }
+
+        //Funtionality Created and tested
+        public Cart GetCartSongs(int userId)
+        {
+            
+            int totalAmount = 0;
+            List<Music> cartSongs = new List<Music>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("GetCartSongs", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters
+                    command.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Music music = new Music
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Artist = reader["Artist"].ToString(),
+                                Price = Convert.ToInt32(reader["Price"])
+                                // Add other properties as needed
+                            };
+
+                            cartSongs.Add(music);
+                            totalAmount = totalAmount + music.Price;
+                        }
+                    }
+                }
+            }
+            Cart cart = new Cart
+            {
+                music = cartSongs,
+                Price = totalAmount
+            };
+
+            return cart;
+        }
+
     }
 }
