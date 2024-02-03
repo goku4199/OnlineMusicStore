@@ -2,9 +2,26 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    //@using Microsoft.AspNetCore.Http
 }
 
+
+
 @model List<Music>
+
+@{
+    var userId = Context.Session.GetInt32("UserId");
+    var username = Context.Session.GetString("Username");
+}
+
+@if (userId.HasValue && !string.IsNullOrEmpty(username))
+{
+    <p>Welcome, @username! Your user ID is @userId.</p>
+}
+else
+{
+    <p>Not logged in.</p>
+}
 
 <!DOCTYPE html>
 <html>

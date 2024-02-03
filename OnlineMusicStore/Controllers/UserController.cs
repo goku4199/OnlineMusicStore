@@ -58,5 +58,12 @@ namespace OnlineMusicStore.Controllers
             ModelState.AddModelError("", "Invalid username or password");
             return View(user);
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // Clear all session data
+            return RedirectToAction("Login", "User");
+        }
     }
 }
