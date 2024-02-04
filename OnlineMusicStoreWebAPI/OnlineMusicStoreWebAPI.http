@@ -1,0 +1,6 @@
+@OnlineMusicStoreWebAPI_HostAddress = http://localhost:5029
+
+GET {{OnlineMusicStoreWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

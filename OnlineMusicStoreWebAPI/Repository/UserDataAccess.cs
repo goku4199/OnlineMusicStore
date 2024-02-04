@@ -1,8 +1,8 @@
-﻿using OnlineMusicStore.Models;
+﻿using OnlineMusicStoreWebAPI.Models;
 using System.Data.SqlClient;
 using System.Data;
 
-namespace OnlineMusicStore.Repository
+namespace OnlineMusicStoreWebAPI.Repository
 {
     public class UserDataAccess
     {
@@ -108,15 +108,15 @@ namespace OnlineMusicStore.Repository
                         {
                             Music music = new Music
                             {
-                                id = Convert.ToInt32(reader["Id"]),
-                                title = reader["Title"].ToString(),
-                                artist = reader["Artist"].ToString(),
-                                price = Convert.ToInt32(reader["Price"])
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Artist = reader["Artist"].ToString(),
+                                Price = Convert.ToInt32(reader["Price"])
                                 // Add other properties as needed
                             };
 
                             cartSongs.Add(music);
-                            totalAmount = totalAmount + music.price;
+                            totalAmount = totalAmount + music.Price;
                         }
                     }
                 }
@@ -124,7 +124,7 @@ namespace OnlineMusicStore.Repository
             Cart cart = new Cart
             {
                 music = cartSongs,
-                price = totalAmount
+                Price = totalAmount
             };
 
             return cart;

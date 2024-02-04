@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OnlineMusicStore.Models
+namespace OnlineMusicStoreWebAPI.Models
 {
     public class User
     {

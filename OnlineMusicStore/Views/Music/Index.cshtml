@@ -47,17 +47,17 @@ else
                 @foreach (var music in Model)
                 {
                     <tr>
-                        <td>@music.Id</td>
-                        <td>@music.Title</td>
-                        <td>@music.Artist</td>
-                        <td>@music.Price</td>
+                        <td>@music.id</td>
+                        <td>@music.title</td>
+                        <td>@music.artist</td>
+                        <td>@music.price</td>
                         <!-- Add other columns as needed -->
                         <td>
                             @if (userId.HasValue && !string.IsNullOrEmpty(username))
                             {
                                 <form method="post" action="@Url.Action("AddToCart", "User")">
                                     <input type="hidden" name="userId" value="@userId" />
-                                    <input type="hidden" name="songId" value="@music.Id" />
+                                    <input type="hidden" name="songId" value="@music.id" />
                                     <button type="submit">Add to Cart</button>
                                 </form>
                             }

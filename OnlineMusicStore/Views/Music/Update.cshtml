@@ -16,24 +16,24 @@
     <h2>Edit Song</h2>
 
     <form method="post" asp-action="Update" asp-controller="Music">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="id" />
 
         <div>
-            <label asp-for="Title"></label>
-            <input asp-for="Title" class="form-control" required />
-            <span asp-validation-for="Title" class="text-danger"></span>
+            <label asp-for="title"></label>
+            <input asp-for="title" class="form-control" required />
+            <span asp-validation-for="title" class="text-danger"></span>
         </div>
 
         <div>
-            <label asp-for="Artist"></label>
-            <input asp-for="Artist" class="form-control" required />
-            <span asp-validation-for="Artist" class="text-danger"></span>
+            <label asp-for="artist"></label>
+            <input asp-for="artist" class="form-control" required />
+            <span asp-validation-for="artist" class="text-danger"></span>
         </div>
 
         <div>
-            <label asp-for="Price"></label>
-            <input asp-for="Price" class="form-control" step="0.01" required />
-            <span asp-validation-for="Price" class="text-danger"></span>
+            <label asp-for="price"></label>
+            <input asp-for="price" class="form-control" step="0.01" required />
+            <span asp-validation-for="price" class="text-danger"></span>
         </div>
 
         <!-- Add other input fields as needed -->

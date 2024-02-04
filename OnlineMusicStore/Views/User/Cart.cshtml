@@ -26,10 +26,10 @@
             @foreach (var music in Model.music)
             {
                 <tr>
-                    <td>@music.Id</td>
-                    <td>@music.Title</td>
-                    <td>@music.Artist</td>
-                    <td>@music.Price</td>
+                    <td>@music.id</td>
+                    <td>@music.title</td>
+                    <td>@music.artist</td>
+                    <td>@music.price</td>
                     <!-- Add other columns as needed -->
                 </tr>
             }
@@ -38,7 +38,7 @@
     </table>
 
     <h2>Total Price</h2>
-    @Model.Price
+    @Model.price
 }
 else
 {

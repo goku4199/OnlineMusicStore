@@ -1,107 +1,107 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineMusicStore.Models;
 using OnlineMusicStore.Repository;
+using System.Collections;
+using System.Text;
+using System.Text.Json;
 
 namespace OnlineMusicStore.Controllers
 {
-    public class MusicController : Controller
+    
+public class MusicController : Controller
     {
-        //private readonly MusicDataAccess musicDataAccess;
-        private readonly MusicDataAccess musicDataAccess;
+        private HttpClient _client;
 
-        public MusicController(MusicDataAccess musicDataAccess)
+        public MusicController()
         {
-            this.musicDataAccess = musicDataAccess;
+            _client = new HttpClient();
         }
 
-        /*public MusicController(IConfiguration configuration)
+        //Working
+        // GET: Music
+        public async Task<ActionResult> Index()
         {
-            string connectionString = configuration.GetConnectionString("YourConnectionStringName");
-            musicDataAccess = new MusicDataAccess(connectionString);
-        }*/
-
-        //Funtionality Created and tested
-        [HttpGet]
-        public IActionResult Index()
-        {
-            var musicList = musicDataAccess.GetAllMusic();
-            return View(musicList);
+            HttpResponseMessage response = await _client.GetAsync("https://localhost:7006/api/Music");
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var music = JsonSerializer.Deserialize<IList<Music>>(data);
+                return View(music);
+            }
+            return View(new List<Music>());
         }
 
-        //Funtionality Created and tested
+        //Working
+        // GET: Music/Create
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        //Functionality Created and Tested
+        //Working
+        // POST: Music/Create
         [HttpPost]
-        public IActionResult Create(Music music)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(Music music)
         {
-            musicDataAccess.CreateMusic(music);
-            return RedirectToAction("Index");
-        }
-
-        /*
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var music = musicDataAccess.GetMusicById(id);
-            if (music == null)
+            var content = new StringContent(JsonSerializer.Serialize(music), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _client.PostAsync("https://localhost:7006/api/music", content);
+            if (response.IsSuccessStatusCode)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             return View(music);
         }
 
-        */
-
-        //Funtionality Created and tested
+        //Working
         [HttpGet]
-        public IActionResult Update(int id)
+        public async Task<IActionResult> Update(int id)
         {
-            // Retrieve the Music record from the database based on the provided id
-            Music music = musicDataAccess.GetMusicById(id);
-
-            // Check if the music record exists
-            if (music == null)
+            HttpResponseMessage response = await _client.GetAsync($"https://localhost:7006/api/Music/{id}");
+            if (response.IsSuccessStatusCode)
             {
-                return NotFound(); // Or handle the case where the record is not found
+                var data = await response.Content.ReadAsStringAsync();
+                var music = JsonSerializer.Deserialize<Music>(data);
+                return View(music);
             }
-
-            // Pass the Music object to the Edit.cshtml Razor view for user input
-            return View(music);
+            return NotFound();
         }
 
-        //Funtionality Created and tested
+        //Working
+        // POST: Music/Edit/5
         [HttpPost]
-        public IActionResult Update(Music music)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(int id, Music music)
         {
-            musicDataAccess.UpdateMusic(music);
-            return RedirectToAction("Index");
-        }
-        /*
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            var music = musicDataAccess.GetMusicById(id);
-            if (music == null)
+            if (id != music.id)
             {
-                return NotFound();
+                return BadRequest();
+            }
+
+            var content = new StringContent(JsonSerializer.Serialize(music), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _client.PutAsync($"https://localhost:7006/api/music/{id}", content);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
             }
             return View(music);
         }
-        */
 
-        //Funtionality Created and tested
+        //Working
+        // POST: Music/Delete/5
         [HttpGet]
-        public IActionResult Delete(int id)
+        //[ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(int id)
         {
-            musicDataAccess.DeleteMusic(id);
-            return RedirectToAction("Index");
+            HttpResponseMessage response = await _client.DeleteAsync($"https://localhost:7006/api/music/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
         }
-        
     }
+
 
 }

@@ -1,8 +1,8 @@
-﻿using OnlineMusicStore.Models;
+﻿using OnlineMusicStoreWebAPI.Models;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace OnlineMusicStore.Repository
+namespace OnlineMusicStoreWebAPI.Repository
 {
     public class MusicDataAccess
     {
@@ -32,10 +32,10 @@ namespace OnlineMusicStore.Repository
                         {
                             Music music = new Music
                             {
-                                id = Convert.ToInt32(reader["Id"]),
-                                title = reader["Title"].ToString(),
-                                artist = reader["Artist"].ToString(),
-                                price = Convert.ToInt32(reader["Price"])
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Artist = reader["Artist"].ToString(),
+                                Price = Convert.ToInt32(reader["Price"])
                                 // Add other properties as needed
                             };
 
@@ -72,10 +72,10 @@ namespace OnlineMusicStore.Repository
                         {
                             music = new Music
                             {
-                                id = Convert.ToInt32(reader["Id"]),
-                                title = reader["Title"].ToString(),
-                                artist = reader["Artist"].ToString(),
-                                price = Convert.ToInt32(reader["Price"])
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Artist = reader["Artist"].ToString(),
+                                Price = Convert.ToInt32(reader["Price"])
                                 // Add other properties as needed
                             };
                         }
@@ -98,9 +98,9 @@ namespace OnlineMusicStore.Repository
                     command.CommandType = CommandType.StoredProcedure;
 
                     // Add parameters
-                    command.Parameters.AddWithValue("@Title", music.title);
-                    command.Parameters.AddWithValue("@Artist", music.artist);
-                    command.Parameters.AddWithValue("@Price", music.price);
+                    command.Parameters.AddWithValue("@Title", music.Title);
+                    command.Parameters.AddWithValue("@Artist", music.Artist);
+                    command.Parameters.AddWithValue("@Price", music.Price);
 
                     // ExecuteNonQuery for INSERT operations
                     command.ExecuteNonQuery();
@@ -120,10 +120,10 @@ namespace OnlineMusicStore.Repository
                     command.CommandType = CommandType.StoredProcedure;
 
                     // Add parameters
-                    command.Parameters.AddWithValue("@Id", music.id);
-                    command.Parameters.AddWithValue("@Title", music.title);
-                    command.Parameters.AddWithValue("@Artist", music.artist);
-                    command.Parameters.AddWithValue("@Price", music.price);
+                    command.Parameters.AddWithValue("@Id", music.Id);
+                    command.Parameters.AddWithValue("@Title", music.Title);
+                    command.Parameters.AddWithValue("@Artist", music.Artist);
+                    command.Parameters.AddWithValue("@Price", music.Price);
 
                     // ExecuteNonQuery for UPDATE operations
                     command.ExecuteNonQuery();

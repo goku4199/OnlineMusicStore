@@ -1,18 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OnlineMusicStore.Models
+namespace OnlineMusicStoreWebAPI.Models
 {
     public class Music
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Title is required")]
-        public string title { get; set; }
+        public string Title { get; set; }
 
         [Required(ErrorMessage = "Artist is required")]
-        public string artist { get; set; }
+        public string Artist { get; set; }
 
-        public int price { get; set; }
+        public int Price { get; set; }
 
         // Other properties...
     }

@@ -1,102 +1,117 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineMusicStore.Models;
 using OnlineMusicStore.Repository;
+using System.Text.Json;
+using System.Text;
 
 namespace OnlineMusicStore.Controllers
 {
+    //Working
     public class UserController : Controller
     {
-
-        private readonly UserDataAccess userDataAccess;
-
-        public UserController(UserDataAccess userDataAccess)
+        private HttpClient _client;
+        public UserController()
         {
-            this.userDataAccess = userDataAccess;
+            _client = new HttpClient();
         }
-        //Funtionality Created and tested
+
+        //Working
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        //Funtionality Created and tested
-        [HttpPost]
-        public IActionResult Register(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                // Call ADO.net logic to add user to the database
-                userDataAccess.RegisterUser(user);
-                return RedirectToAction("Login");
-            }
-
-            return View(user);
-        }
-
-        //Funtionality Created and tested
+        //Working
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        //Funtionality Created and tested
+        //Working
+        // POST: User/Register
         [HttpPost]
-        public IActionResult Login(User user)
+        public async Task<IActionResult> Register(User user)
         {
-            // Call ADO.net logic to validate user credentials
-            var authenticatedUser = userDataAccess.ValidateUser(user);
-
-            if (authenticatedUser != null)
+            if (ModelState.IsValid)
             {
-                // Successful login, set user information in session
-                HttpContext.Session.SetInt32("UserId", authenticatedUser.UserId);
-                HttpContext.Session.SetString("Username", authenticatedUser.Username);
+                var content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _client.PostAsync("https://localhost:7006/api/User/Register", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Login");
+                }
+            }
 
-                // Redirect to home or another page
+            return View(user);
+        }
+
+        //Working
+        // POST: User/Login
+        [HttpPost]
+        public async Task<IActionResult> Login(User user)
+        {
+            user.email = "example@example.com"; // Add email value here
+
+            var content = new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _client.PostAsync("https://localhost:7006/api/User/Login", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var authenticatedUser = JsonSerializer.Deserialize<User>(data);
+
+                
+                HttpContext.Session?.SetInt32("UserId", authenticatedUser?.userId ?? 0);
+                HttpContext.Session?.SetString("Username", authenticatedUser?.username ?? "");
+
                 return RedirectToAction("Index", "Music");
             }
 
-            // Failed login, show error message
             ModelState.AddModelError("", "Invalid username or password");
             return View(user);
         }
 
-        //Funtionality Created and tested
+        // POST: User/Logout
         [HttpPost]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear(); // Clear all session data
+            HttpContext.Session?.Clear();
             return RedirectToAction("Login", "User");
         }
 
-        //Funtionality Created and tested
+        //Working
+        // POST: User/AddToCart
         [HttpPost]
-        public IActionResult AddToCart(int userId, int songId)
+        public async Task<IActionResult> AddToCart(int userId, int songId)
         {
-            // Call ADO.net logic to add the song to the cart
-            userDataAccess.AddToCart(userId, songId);
+            HttpResponseMessage response = await _client.PostAsync($"https://localhost:7006/api/user/addtocart?userId={userId}&songId={songId}", null);
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Music");
+            }
 
-            // Redirect back to the Music/Index view or another appropriate page
-            return RedirectToAction("Index", "Music");
+            return View();
         }
 
-        //Funtionality Created and tested
+        //Working
+        // GET: User/Cart
         [HttpGet]
-        public IActionResult Cart()
+        public async Task<IActionResult> Cart()
         {
-            // Get user ID from session
-            var userId = HttpContext.Session.GetInt32("UserId");
+            var userId = HttpContext.Session?.GetInt32("UserId");
 
             if (userId.HasValue)
             {
-                // Call ADO.net logic to retrieve songs in the user's cart
-                var cart = userDataAccess.GetCartSongs(userId.Value);
-                return View(cart);
+                HttpResponseMessage response = await _client.GetAsync($"https://localhost:7006/api/user/cart?userId={userId.Value}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    var cart = JsonSerializer.Deserialize<Cart>(data);
+                    return View(cart);
+                }
             }
 
-            // Redirect to login or handle appropriately for not logged in user
             return RedirectToAction("Login", "User");
         }
     }
